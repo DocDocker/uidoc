@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Общие функции платформы &#8212; документация SimpleUI 2.0.0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Самостоятельный режим" href="offline.html" />
+    <link rel="prev" title="Экраны, переменные и события" href="screens.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Общие функции платформы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<div class="section" id="id2">
+<h2>Список Задачи (для он-лайн)<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<a class="reference internal image-reference" href="_images/common_pic7.jpg"><img alt="_images/common_pic7.jpg" class="align-center" src="_images/common_pic7.jpg" style="width: 343.8px; height: 610.8px;" /></a>
+<p>По кнопке «Задачи» теперь можно запросить учетную систему не предмет какого то списка задач, заказов и т.д. Например это могут быть «Текущие заказы к доставке для определенного пользователя»</p>
+<p>В момент нажатии кнопки приложение делает запрос к сервису (/get_tasklist/), и он возвращает некий список. Этот список представляется пользователю как список карточек с определенным оформлением</p>
+<p>Вместе со списком можно передать наименование операции которую надо запустить при клике на задачу, ID задачи, некий параметр который записывается в orderRef и который потом можно прочитать в обработчике.</p>
+<p>При клике на задачу передается запрос на специальный сервис (taskcommit) с ID задачи. Это можно использовать для биллинга например.</p>
+<p>Все это рабоатет через 2 сервиса:</p>
+<a class="reference internal image-reference" href="_images/common_pic8.jpg"><img alt="_images/common_pic8.jpg" class="align-center" src="_images/common_pic8.jpg" style="width: 246.0px; height: 41.0px;" /></a>
+<p>В обработчике get_tasklist приведен пример заполнения списка. Для каждой карточки можно заполнить 4 поля: заголовок, 2 реквизита (при этом установив заголовок поля) и поле примечание внизу. Также в примере показано какие еще специальные поля передаются в список и как они обрабатываются.</p>
+<p>В демо базе пример в рабочем месте «Отгрузка» процесс «Отгрузка по заказу (из списка)» демонстрирует обработку заказа из списка.</p>
+<div class="admonition tip">
+<p class="admonition-title">Совет</p>
+<p>Список задач также рабоатет и в самостоятельном режиме (в случае если бекенд - не 1С). Это описано в разделе REST самостоятельного режима.</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>Работа с таблицами и план-факт<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Через переменные в виде строки json можно передавать произвольные таблицы и размещать их в разных местах программы.</p>
+<dl class="simple">
+<dt>Произвольная таблица может быть представлена в виде:</dt><dd><ul class="simple">
+<li><p><strong>Элемента экрана</strong>, вместе с другими элементами. Для этого нужно использовать элемент экрана «Таблица» и в переменной передать строку json в специальном формате</p></li>
+<li><p>Переопределить нажатие центральной кнопки <strong>План-факт</strong>. Старый формат также действует, но если задана произвольная таблица то это имеет приоритет. Для этого нужно вставить переменную <strong>central_table</strong>.   Например : <code class="docutils literal notranslate"><span class="pre">Переменные.Вставить(&quot;central_table&quot;,CтpoкaJSON);</span></code></p></li>
+<li><p>Вызвать отдельное окно с таблицей по какому то событию (например по нажатию кнопки) с заполненной таблицей на весь экран. Для этого нужно использовать переменную <strong>report_table</strong>  Например: <code class="docutils literal notranslate"><span class="pre">Переменные.Вставить(&quot;report_table&quot;,CтpoкaJSON);</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>В структуре json можно описывать :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>столбцы таблицы – имя, заголовок, ширину колонки</p></li>
+<li><p>Общие опции таблицы – размер шрифта, скрыть заголовок, отключить подсветку линий через строку</p></li>
+<li><p>Непосредственно данные в ячейках</p></li>
+<li><p>Раскраску отдельных ячеек произвольными цветами</p></li>
+</ul>
+</div></blockquote>
+<p>Структура формата таблицы не зависит от места использования таблицы – она общая.</p>
+<p>Пример формата:</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
+<span class="nt">&quot;textsize&quot;</span><span class="p">:</span> <span class="s2">&quot;25&quot;</span><span class="p">,</span>
+<span class="nt">&quot;hidecaption&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="nt">&quot;hideinterline&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nom&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;Товар&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;qty&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;Кол-во&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;Цена&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+  <span class="p">}</span>
+<span class="p">],</span>
+<span class="nt">&quot;rows&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Процессов Intel Core 9 OEM&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;15500.00&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Процессов Intel Core 5 BOX&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;-2&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;12500.00&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Процессов Intel Core 5 (OEM)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;11500.00&quot;</span>
+  <span class="p">}</span>
+<span class="p">],</span>
+<span class="nt">&quot;colorcells&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;row&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;column&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#d81b60&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Атрибут type обязательный он должен быть всегда значение «table»</p>
+<p><strong>textsize</strong> -необязательный – отвечает за размер текста</p>
+<p><strong>hidecaption</strong> – необязательный – не выводить шапку таблицы</p>
+<p><strong>hideinterline</strong> – необязательный – не выводить раскраску строк</p>
+<p><strong>columns</strong>  <em>обязательный</em> массив в котором описываются колонки. name – внутреннее имя, header -отображаетмый заголовок, weight – ширина колонки в виде относительного веса. Если задать все колонки в 1 то они будут равны.</p>
+<p><strong>rows</strong>  <em>обязательный</em>  массив в котором описываются строки. Каждый элемент имеет имя, совпадающее с именем столбца и значение</p>
+<p><strong>colorcells</strong> <em>необязательный*</em> массив– подсветка произвольных ячеек нужным цветом. Строка и столбец задаются номерами начиная с 0. Цвет (color) – в HEX виде.</p>
+<p>Нажатие на строку таблицы таблицы  вызывает <em>событие ввода</em> и передачи данных на сервер. Выбранная строка  - объект JSON сериализуется в переменную <strong>selected_line</strong></p>
+<div class="section" id="id4">
+<h3>Обработка ввода по таблице.<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h3>
+<p>В версии «Pro» доступно получение события о выбранной строке таблицы. Пример помещен в конфигурацию «Примеры #2». При нажатии на таблицу в переменную «selected_line» пишется json с выбранной строкой</p>
+<p>Для «самостоятельно режима» при клике по таблице возвращается не json. Программа ищет в выделенной строке поля <strong>id</strong>, <strong>order</strong> и <strong>orderRef</strong> и если они есть, записывает в переменные значения <code class="docutils literal notranslate"><span class="pre">selected_line_id</span></code>, <code class="docutils literal notranslate"><span class="pre">order</span></code> и <code class="docutils literal notranslate"><span class="pre">orderRef</span></code></p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>Запуск процессов из процессов и другие управляющие команды<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Можно немедленно запустить процесс из другого процесса, если в присвоить переменной <code class="docutils literal notranslate"><span class="pre">StartProcessHashMap</span></code> строку, содержащую имя вызываемого процесса. Это вызовет запуск нового окна с другим процессом– туда скопируются переменные из вызывающего окна и выполнятся все процессы. После того как работа с новым процессом будет закончена – в старом процессе работа продолжится с текущего шага. С помощью этого приема удобно организовывать цикл в цикле. Пример в демо базе: «Цикл в цикле»</p>
+<p>Также есть другая аналогичная функция - StartProcess. Вызов: присваивание переменной  <code class="docutils literal notranslate"><span class="pre">StartProcess</span></code> строку, содержащую имя вызываемого процесса. Это будет просто переключение процесса без возврата на вызывающий процесс.</p>
+</div>
+<div class="section" id="gps">
+<h2>GPS<a class="headerlink" href="#gps" title="Ссылка на этот заголовок">¶</a></h2>
+<p>В настройках есть галочка «Отправлять координаты» если ее включить то в люом процессе который запущен будут добавляться специальные переменные относящиеся к службе геопозиционирования.</p>
+<div class="admonition attention">
+<p class="admonition-title">Внимание</p>
+<p>Необходимо в настройках дать приложению разрешение на определение местоположения. Также необходимо убедиться, что в устройстве включено определение местоположения.</p>
+</div>
+<p>Устройство запрашивает данные каждые 5 секунд и отправка происходит каждый раз когда отправляются переменные. Сразу в момент запуск апроцесса данных может не быть, нужно чуть-чуть подождать.</p>
+<p>Данные запрашиваются и поступают с 2х провайдеров – gps и network (сети или wi-fi) – в обработчике можно фильтровать по факту.</p>
+<p>Специальные переменные, в котрые устройство передает данные:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Latitude</strong> – широта</p></li>
+<li><p><strong>Longitude</strong> – долгота</p></li>
+<li><p><strong>gps_city</strong> – город, если есть в адресе</p></li>
+<li><p><strong>gps_postal_code</strong> – индекс</p></li>
+<li><p><strong>gps_addres_string</strong> – полная неразобранная информация , которую можно разобрать по тегам</p></li>
+<li><p><strong>gps_provider</strong> – источник данных</p></li>
+<li><p><strong>gps_accuracy</strong> -  точность</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id6">
+<h2>Экран диалога<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Можно запустить модальный экран для ввода значений с кнопками «ОК» и «Отмена» и перехватывать событие этого экрана. В случае нажатия на ОК будет вызвано событие ввода и переменные этого экрана могут быть обработаны.</p>
+<p>Состав экрана вы определяете сами – это обычный экран</p>
+<p>Вызов экрана через обработчик – <code class="docutils literal notranslate"><span class="pre">Переменные.Вставить(«StartScreen»,</span> <span class="pre">«Имя</span> <span class="pre">экрана»)</span></code>. Вызываемый экран должен быть в составе процесса.</p>
+<p>Получение события через обработчик: переменная event установлена в <code class="docutils literal notranslate"><span class="pre">“OnResult”</span></code></p>
+<a class="reference internal image-reference" href="_images/common_pic10.jpg"><img alt="_images/common_pic10.jpg" class="align-center" src="_images/common_pic10.jpg" style="width: 799.2px; height: 413.6px;" /></a>
+<p>Запуск экрана Offline: вид действия для запуска «Запустить экран», параметр – <strong>точное</strong> название экрана диалога который есть в составе процесса</p>
+<p>Событие ввода : Вид обработчика – «Закрытие экрана», в Обработчике указываете название экрана диалога. Пример есть в демо.</p>
+</div>
+<div class="section" id="id7">
+<h2>Логин и запуск конфигурации<a class="headerlink" href="#id7" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Можно организовать экран входа в систему котрый будет запускаться при запуске приложения и пункт основного меню для перелогинивания.  Для того чтобы процесс запускался при входе в приложение нужно поставить галочку <strong>«Запустить при старте»</strong></p>
+<a class="reference internal image-reference" href="_images/common_pic9.jpg"><img alt="_images/common_pic9.jpg" class="align-center" src="_images/common_pic9.jpg" style="width: 724.0px; height: 447.0px;" /></a>
+<p>Для того, чтобы произошла загрузка нужной конфигурации нужно заполнить переменную <code class="docutils literal notranslate"><span class="pre">ID</span></code>  кодом справочника Мобильные клиенты, нужного клиента. Это тот же код который указывается в настройках. Если с терминалом будут работать несколько человек, можно создать конфигурацию, содержащую толкьо процесс «Логин» , и другие клиенты будут подгружаться из нее.
+Также процесс с логином можно добавить во все конфигурации клиентов, в которых нужно перелогиниваться (совместное использование одного терминала)</p>
+</div>
+<div class="section" id="id8">
+<h2>Печать на мобильном устройстве<a class="headerlink" href="#id8" title="Ссылка на этот заголовок">¶</a></h2>
+<p>На мобильном устройстве доступна печать PDF-документа сформированного на стороне сервера. Например это может быть печатаная форма, сохраненная в 1С. В демо базе есть пример создания печатной формы и экрана для печати – см. команду print_pdf HTTP сервиса SimpleWMS.</p>
+<p>Принцип работы следующий:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Обработчик события (кнопки или иного события) на устройстве инициирует запрос в сервис /print_pdf/<a href="#id9"><span class="problematic" id="id10">*</span></a>. Передавая при этом строку параметров ктоорые нужны для печати формы. Разработчик сам формирует эту строку и сам предусматривает параметры</p></li>
+<li><p>Обработчик команды находит нужный документ или объект, формирует печатную форму и сохраняет в PDF отправляет в ответе</p></li>
+<li><p>На стороне устройства читается ответ, извлекается PDF и отправляется менеджеру печати.</p></li>
+</ul>
+</div></blockquote>
+<p>Для онлайн-режима:</p>
+<p>Команда печати передается через переменную PrintService. Например так. В качестве значения нужно передать строку параметров запроса который пойдет на сервер</p>
+<p><code class="docutils literal notranslate"><span class="pre">Переменные.Вставить(&quot;PrintService&quot;,&quot;operation=print&amp;barcode=&quot;+Переменные.barcode);</span></code></p>
+<p>Далее в модуле команды print_pdf параметры извлекаются и на основании этой информации формируется ответ с печатной формой
+В operation можно передать либо <strong>print</strong> либо <strong>view</strong> – и это же должно пойти в ответе. На основании этого параметра откроется либо сразу менеджер печати либо программа просмотра PDF</p>
+<div class="admonition hint">
+<p class="admonition-title">Подсказка</p>
+<p>если print не работает - попробуйте view. Это зависит от устройства и софта.</p>
+</div>
+<p><strong>Для документов</strong>:</p>
+<p>В отличии от экранов строка параметров формируется автоматически и в ней идет команда doc_print и предопределенный параметр uid – в котором содержится УИД Экземпляра документа. Также идет параметр template – с названием печатной формы.</p>
+<p>Для определения списка печатных форм документа нужно добавить необходимо добавить их в табличную часть «Печать». Вид печати – «Печать через сервис». Остальное можно не заполнять.</p>
+</div>
+<div class="section" id="id11">
+<h2>Веб-сервис на клиенте. Возможности<a class="headerlink" href="#id11" title="Ссылка на этот заголовок">¶</a></h2>
+<div class="section" id="id12">
+<h3>Передача задания напрямую на устройство<a class="headerlink" href="#id12" title="Ссылка на этот заголовок">¶</a></h3>
+<p>На клиент может быть отправлено задание (пример есть в форме документа «Заказ покупателя»). Это не просто отправка и не просто отправка напрмую, а еще и прямое взаимодействие - так как пользователь может быть занят или отказаться от задания и это все в режиме реального времени будет видно в учетной системе в процессе.</p>
+<a class="reference internal image-reference" href="_images/common_pic2.jpg"><img alt="_images/common_pic2.jpg" class="align-center" src="_images/common_pic2.jpg" style="width: 1002.0px; height: 174.0px;" /></a>
+<p>Для этого достаточно указать адрес клиента (это адрес веб-сервера на мобильном устройстве, которых храниться в справочнике «Мобильные клиенты»),ТаблицаЗаказа (заполненную как указано ранее), сообщение, которое будет отображено в диалоге, имя процесса.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Функция</span> <span class="pre">ОтправитьЗаданиеНаОтборПоЗаказуМобильныйКлиент(АдресТерминала,Команда,ТаблицаДанных,Сообщение,Процесс,Заказ</span> <span class="pre">)</span>&#160;&#160; <span class="pre">Экспорт</span></code></p>
+<p>Также при передаче такого сообщения передаются переменные <strong>order</strong> и <strong>orderRef</strong> содержащие ссылку на заказ (параметр Заказ) и представление заказа
+При приеме сообщения веб-сервер клиента проверяет, не занят ли клиент выполнением какого то другого процесса и если занят отправляет ответ <strong>busy, если нет то ответ будет **recieved</strong>. Если же произошла ошибка при доставке то ответ будет другой. Также состаояние загрузки мобильного клиента можно прочитать в регистре сведений scСтатусыИсполненияПроцессов</p>
+<p>При доставке сообщения на главном экране будет показан диалог и прозвучит звук приема сообщения (даже если экран выключен, так как веб-сервер рабоатет как сервис)</p>
+<a class="reference internal image-reference" href="_images/common_pic3.jpg"><img alt="_images/common_pic3.jpg" class="align-center" src="_images/common_pic3.jpg" style="width: 323.0px; height: 574.0px;" /></a>
+<p>Если пользователь нажимает «Да», то запускается процесс котрый был указан в методе. Важно: в конфигурации пользователя должен присутствовать этот процесс.</p>
+</div>
+<div class="section" id="id13">
+<h3>Передача голосового сообщения на устройство<a class="headerlink" href="#id13" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Можно отправить текст на конкретное устройство, и оно будет произнесено с помощью синтеза речи даже если программа свернута или выключен экран блокировки.</p>
+<p>Для этого нужно использовать команду <code class="docutils literal notranslate"><span class="pre">Voice</span></code> с параметром <code class="docutils literal notranslate"><span class="pre">text</span></code>. Например так:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Справочники.scМобильныеКлиенты.ОтправитьSQLЗапросМобильныйКлиент(URLМобильногоУстройства,&quot;Voice&quot;,&quot;text&quot;,&quot;&amp;text=Ваша</span> <span class="pre">фраза</span> <span class="pre">на</span> <span class="pre">языке</span> <span class="pre">по</span> <span class="pre">умолчанию”)</span></code></p>
+</div>
+<div class="section" id="sql">
+<h3>Команды SQL и Передача конфигурации<a class="headerlink" href="#sql" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Данные команды описаны в разделее Самостоятельный режим</p>
+</div>
+</div>
+<div class="section" id="odata">
+<h2>Odata<a class="headerlink" href="#odata" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Если в серверной части параллельно с веб-сервисом опубликован интерфейс Odata то можно вместо заполнения источников данных запросами через обработчики просто указать запрос к OData в конструкторе.
+Для этого необходимо в настройках программы указать адрес сервера Odata</p>
+<a class="reference internal image-reference" href="_images/common_pic4.jpg"><img alt="_images/common_pic4.jpg" class="align-center" src="_images/common_pic4.jpg" style="width: 549.5px; height: 535.5px;" /></a>
+<p>После чего можно использовать OData запросы для таблицы или списка как показано на рисунках. Обратите внимание что для списка нужен толкьо одно поле – берется первое поле. Поэтому его лучше определить оператором select
+Для таблицы выводятся все поля, но их тоже лучше определять select чтобы не было лишних столбцов</p>
+<a class="reference internal image-reference" href="_images/common_pic5.jpg"><img alt="_images/common_pic5.jpg" class="align-center" src="_images/common_pic5.jpg" style="width: 818.0px; height: 182.0px;" /></a>
+<a class="reference internal image-reference" href="_images/common_pic6.jpg"><img alt="_images/common_pic6.jpg" class="align-center" src="_images/common_pic6.jpg" style="width: 989.0px; height: 178.0px;" /></a>
+</div>
+<div class="section" id="pro">
+<h2>Запуск/Переключение экранов с сервера напямую и таймер событий экрана/обработчик ожидания (только для Pro-версии)<a class="headerlink" href="#pro" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Возможно с сервера передавать на конкретное устройство команду переключения экрана (после которой устройство шлет запрос send_input и отрисовывает экран по новой). Это может понадобится например для организации информационных табло на телевизорах с Андроид. Т.е. для любого открытого процесса выполнится переключение экрана.</p>
+<p>Это можно сделать например строкой <code class="docutils literal notranslate"><span class="pre">Справочники.scМобильныеКлиенты.ОтправитьSQLЗапросМобильныйКлиент(URLМобильногоУстройства,&quot;Run&quot;,&quot;txt&quot;,&quot;&amp;text=blob&quot;);</span></code></p>
+<p>Пример есть в демо базе в обработке «Примеры взаимодействия с сервером»</p>
+<p>Также можно подписать экран на выполнение периодической команды переключения экрана. Это может понадобится для той же цели – периодического показа например какого то информационного экрана. Таймер задается в настройках приложения. Признак того что экран будет выполниться по расписанию – вот эта галочка. В демо базе можно посмотреть пример с Индикаторами. Будет работать толкьо если у вас – Pro-версия.</p>
+<a class="reference internal image-reference" href="_images/common_pic1.jpg"><img alt="_images/common_pic1.jpg" class="align-center" src="_images/common_pic1.jpg" style="width: 339.20000000000005px; height: 75.2px;" /></a>
+</div>
+<div class="section" id="id14">
+<h2>Замеры производительности<a class="headerlink" href="#id14" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Для того чтобы изменить время выполнения экрана (допустим операций, перечисленный в ПриОткрытии) нужно запустить его с помощью установки переменной <code class="docutils literal notranslate"><span class="pre">RunTestScreen</span></code> а значение – имя экрана. После загрузки в переменную <code class="docutils literal notranslate"><span class="pre">TestResult</span></code> будет помещено время выполнения в миллисекундах.</p>
+</div>
+<div class="section" id="id15">
+<h2>Отправка статусов<a class="headerlink" href="#id15" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Как уже было описано выше, при запуске процесса и при его окончании, отправляется запрос set_status. Данные пишутся в регистр «scСтатусыИсполненияПроцессов». По этому регистру можно мониторить состояние загруженности кладовщиков . Эти данные можно использовать для диспетчеризации отправки заданий кладовщикам (отправлять на незанятые клиенты). Ну и так как туда пишется время начала и окончания процесса, то легко посчитать длительность выполнения операций, что обычно используется в отчетах по эффективности работы.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">SimpleUI</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+<p class="caption"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">О платформе</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_it_works.html">Как это работает?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Установка, ресурсы, начало работы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pro_version.html">Pro-версия</a></li>
+<li class="toctree-l1"><a class="reference internal" href="screens.html">Экраны, переменные и события</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Общие функции платформы</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Список Задачи (для он-лайн)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Работа с таблицами и план-факт</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Обработка ввода по таблице.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Запуск процессов из процессов и другие управляющие команды</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gps">GPS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Экран диалога</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Логин и запуск конфигурации</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">Печать на мобильном устройстве</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">Веб-сервис на клиенте. Возможности</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Передача задания напрямую на устройство</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Передача голосового сообщения на устройство</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sql">Команды SQL и Передача конфигурации</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#odata">Odata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pro">Запуск/Переключение экранов с сервера напямую и таймер событий экрана/обработчик ожидания (только для Pro-версии)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">Замеры производительности</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">Отправка статусов</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="offline.html">Самостоятельный режим</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs.html">Документы</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="screens.html" title="предыдущая глава">Экраны, переменные и события</a></li>
+      <li>Next: <a href="offline.html" title="следующая глава">Самостоятельный режим</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Dmitry Vorontsov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/common_functions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

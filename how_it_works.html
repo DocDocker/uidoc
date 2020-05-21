@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Как это работает? &#8212; документация SimpleUI 2.0.0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="prev" title="Добро пожаловать в документацию SimpleUI!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Как это работает?<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<div class="section" id="id2">
+<h2>Конфигурации, процессы, экраны<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>В конструкторе создаются <strong>Конфигурации клиента</strong>. Конфигурации определяет состав <strong>Процессов</strong>, доступных на мобильном клиенте. <strong>Процесс</strong> – это набор экранов, который запускается со списка процессов (главного меню) или запускается отправкой сообщения с сервера или из другого процесса.
+Цель процесса – произвести какие то действия в базе: добавить строки документа, создать документ и т.д. Т.е. в случае учетных систем можно сказать что это соответствует бизнес-процессу или части какого то бизнес-процесса. Например это может быть «Приемка товара».</p>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Процесс может быть скрытый (галочка «Не отображать в интерфейсе). Это можно поставить для процессов, которые запускаются с сервера. В демо базе это например процесс «Прием заказа с сервера»</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/how_it_works_pic1.jpg"><img alt="_images/how_it_works_pic1.jpg" src="_images/how_it_works_pic1.jpg" style="width: 238.0px; height: 51.0px;" /></a>
+</div>
+<p>Таким образом Конфигурация состоит из набора процессов, отображаемый или не отображаемых в главном меню.
+Вот так это выглядит в конструкторе:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/how_pic2.PNG"><img alt="_images/how_pic2.PNG" src="_images/how_pic2.PNG" style="width: 567.2px; height: 662.4000000000001px;" /></a>
+</div>
+<p>А вот так в меню:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/menu_pic.png"><img alt="_images/menu_pic.png" src="_images/menu_pic.png" style="width: 324.0px; height: 576.0px;" /></a>
+</div>
+<p>При этом каждый Процесс состоит из <strong>Экранов</strong>. А каждый экран -это набор из <strong>элементов экрана</strong>. Элементы экрана – это надписи, поля ввода, таблицы, галочки и т.д. – т.е. то что создает на экране картинку и взаимодействует с пользователем. Также есть <em>управляющие элементы</em> в виде парящих кнопок (они не вписаны в структуру элементов, а как бы парят сверху) – это например сканирование штрих-кода камерой, фотографирование и т.д. При этом элементы могут что то записывать в <strong>Переменные</strong> либо отображать Переменные, а переменные в свою очередь могут отображаться на экране.</p>
+<p>Вот так это выглядит в конфигураторе и на экране устройства.</p>
+<img alt="_images/work_dev.jpg" src="_images/work_dev.jpg" />
+<p>Переменные в которые идет запись указываются у элементов. Для получения данных из переменной ее надо просто упомянуть с префиксом “&#64;”. В он-лайн режиме Переменные синхронизируются с сервером.</p>
+<img alt="_images/show_var.jpg" src="_images/show_var.jpg" />
+<p>Разметка экрана может быть произвольной с помощью <strong>Контейнеров</strong> либо может быть <em>упрощённая предопределенная разметка</em>. С помощью контейнером можно сделать экран любой сложности – расположить в нем любое количество любых элементов. В упрощенном режиме экраны больше заточены под стиль WMS-систем.
+Экран может содержать преопределенную нижнюю панель навигации, либо ее можно отключить и заменить своими кнопками.</p>
+</div>
+<div class="section" id="id3">
+<h2>Обработка событий<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Нажатие на кнопки, ввод в полях, выбор из списка и.д. – порождает события ввода. Также событие возникают при открытии экрана и других случаях. Это привозит к запуску обработчиков событий.
+В <strong>он-лайн режиме</strong> происходит http-запрос который передает  серверу состояние переменных и обработка происходит на сервере. Например в 1С вот так выглядит обработчик ввода. Вы просто пишете в контексте своей системы что нужно сделать с перемеренными и что приложение должно делать дальше.</p>
+<img alt="_images/listener_ex.jpg" src="_images/listener_ex.jpg" />
+<p>В  <strong>самостоятельном режиме</strong> логика примерно такая же – нужно определить команды по этому событию, они выполнятся на устройстве.</p>
+<img alt="_images/listener_offline.jpg" src="_images/listener_offline.jpg" />
+<p>Переключение экранов определяется в обработчиках. Т.е. когда надо запустить экран, вы просто вставляете в переменную название нужного экрана (для онлайн)</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">Переменные.Вставить(&quot;ShowScreen&quot;,&quot;Экран</span> <span class="pre">ввода</span> <span class="pre">количества&quot;);</span></code></p>
+</div></blockquote>
+<p>либо вот такую команду для самостоятельного режима</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/command_showscreen.jpg"><img alt="_images/command_showscreen.jpg" src="_images/command_showscreen.jpg" style="width: 708.0px; height: 177.60000000000002px;" /></a>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Подсказка</p>
+<p>Таким образом можно создавать зацикливание экранов, вложенные циклы, переходы между блоками логики. Т.е. любые конструкции с условиями и без условий.</p>
+</div>
+<p>Также есть <em>«Упрощенный режим»</em> где последовательность переключения задается последовательностью экранов в процессе и Элементом типа «Цикл». Он включается если снять галочку «Произвольный запуск экранов»</p>
+</div>
+<div class="section" id="id4">
+<h2>Передача конфигурации на устройства<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Таким образом <strong>Конфигурация</strong> состоит из <strong>Процессов</strong>, процессы из <strong>Экранов</strong> а экраны из <strong>Элементов</strong>.  Все вместе это представляет из себя XML-строку. Чтобы устройство могло ее запустить ее надо передать на него. Это можно сделать разыми способами:</p>
+<ul class="simple">
+<li><p><strong>Для онлайн режима тонкого клиента</strong> это делается так (если на 1С): В справочнике <strong>«Мобильные клиенты»</strong> создаются пользователи мобильного приложения. У каждого пользователя есть Код(цифровой) и ему сопоставляется конфигурация. В настройках приложения указывается код пользователя. И каждый раз при запуске приложения конфигурация скачивается на устройство с веб-сервиса. Таким образом если что то изменили в конфигурации – надо просто перезапустить приложение.</p></li>
+<li><p><strong>В оффлайн режиме</strong> веб-сервиса со стороны учетной системы может не быть(или не быть доступа к нему). Тогда конфигурацию можно переслать прямо на устройсво (когда оно на связи) и она сохраниться там. Делается это специальным http-запросом. Также можно просто завести пользователя и сделать все как для онлайн, а потом переключитсья в офф-лайн режим или просто отключить связть – последняя скачанная конфигурация всегда храниться на устройстве и указывается время ее обновления:</p></li>
+<li><p><strong>Распространение конфигурации через «Магазин приложений»</strong> Самым удобным для самостоятельно режима является <strong>«Магазин приложений»</strong>. Его можно организовать на своем сервере или использовать облачный сервис по умолчанию. По сути – это просто таблица где хранятся конфигурации и описания. Туда можно послать конфигурацию через REST А клиент может скачать ее</p></li>
+</ul>
+<p>Вот как в целом все устроено на текущий момент. Остальное руководство раскрывает детали использование экранов, команд и других управляющих элементов. Хорошим подспорьем может послужить демо-база с примерами и примеры готовых решений.</p>
+<p>Также вот тут есть видео с процессом создания простых конфигураций и обзором функционала(также на канале периодически появляются другие видео):</p>
+<p>Видео для Simple WMS (предыдущая версия), но актуально для понимания процесса: <a class="reference external" href="https://www.youtube.com/watch?v=T_OY-fqyJQ8">https://www.youtube.com/watch?v=T_OY-fqyJQ8</a></p>
+<p>Видео по Simple UI: <a class="reference external" href="https://www.youtube.com/watch?v=kInzsWLFJFM&amp;t=225s">https://www.youtube.com/watch?v=kInzsWLFJFM&amp;t=225s</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">SimpleUI</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+<p class="caption"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Как это работает?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Конфигурации, процессы, экраны</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Обработка событий</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Передача конфигурации на устройства</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="предыдущая глава">Добро пожаловать в документацию SimpleUI!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Dmitry Vorontsov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/how_it_works.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

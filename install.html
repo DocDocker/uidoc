@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Установка, ресурсы, начало работы &#8212; документация SimpleUI 2.0.0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Pro-версия" href="pro_version.html" />
+    <link rel="prev" title="Как это работает?" href="how_it_works.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Установка, ресурсы, начало работы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Ссылки на ресурсы:</p>
+<p>Вопросы и ответы, комьюнити на «Инфостарте»: <a class="reference external" href="https://forum.infostart.ru/forum104/topic211360/">https://forum.infostart.ru/forum104/topic211360/</a></p>
+<p><strong>Комплект разработчика (демо-база 1С с примерами, конфигурация для интеграции (конструктор) а также все что нужно для «Микро-WMS») тут, там же ссылка на apk-файл</strong>: <a class="reference external" href="https://infostart.ru/public/1153616/">https://infostart.ru/public/1153616/</a></p>
+<p>Готовые решения: <a class="reference external" href="https://infostart.ru/public/1201444/">https://infostart.ru/public/1201444/</a> и <a class="reference external" href="https://infostart.ru/public/1234475/">https://infostart.ru/public/1234475/</a></p>
+<p>Просто мои публикации на Инфостарте: <a class="reference external" href="https://infostart.ru/profile/129563/">https://infostart.ru/profile/129563/</a></p>
+<p>Само приложение в Google Play: <a class="reference external" href="https://play.google.com/store/apps/details?id=ru.travelfood.simple_ui&amp;hl=ru">https://play.google.com/store/apps/details?id=ru.travelfood.simple_ui&amp;hl=ru</a></p>
+<div class="section" id="id2">
+<h2>Если нужно только разработка самостоятельного приложения (без он-лайн режима с 1С)<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>В этом случае нужно просто скачать Комплект разработчика, развернуть демо базу (она же конструктор), посмотреть демо и создать свою конфигурацию. Публиковать сервис в 1С или другой в таком случае не нужно. Демо базу можно использовать как конструктор для разработки своих конфигураций. Сами конфигурации будут переданы на мобильные устройства следующим способом:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Через магазин приложений в облаке (т.е. через таблицу ui_configurations) для режима работы Simple UI+PostgREST. В приложении по умолчанию прописан адрес тестового облака и магазин с приложениями с готовыми примерами. Если будете публиковать - просьба через свое облако (есть в описании как это сделать)</p></li>
+<li><p>Прямым REST запросом на адрес мобильного устройства для OFF-line режима (т.е. без облака). Это можно сделать в конструкторе из справочника «Мобильные клиенты». Кнопка «Послать конфигурацию»</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition hint">
+<p class="admonition-title">Подсказка</p>
+<p>Также рекомендую посмотреть готовые решения как образец или базу для переделки под свои нужды</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>Если нужна работа в режиме он-лайн через веб-сервис 1С (тонкий клиент)<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<p>После сохранения необходимо опубликовать веб-сервис SimpleWMS.
+В клиентском приложении необходимо прописать код клиента. Код клиента – это код справочника «Мобильные клиенты». Например, для этого клиента в приложении надо установить 5, так как код справочника – 5.</p>
+<a class="reference internal image-reference" href="_images/install_pic1.jpg"><img alt="_images/install_pic1.jpg" class="align-center" src="_images/install_pic1.jpg" style="width: 456.8px; height: 525.6px;" /></a>
+<p>Также нужно прописать адрес опубликованного сервиса в формате <a class="reference external" href="http:/">http:/</a>/&lt;адрес сервера: порт&gt;/&lt;алиас_сервера&gt;/hs/simplewms
+Такой формат ссылки будет актуален для настройки, показанной на рисунке:</p>
+<a class="reference internal image-reference" href="_images/install_pic2.jpg"><img alt="_images/install_pic2.jpg" class="align-center" src="_images/install_pic2.jpg" style="width: 408.8px; height: 223.20000000000002px;" /></a>
+<p>Взаимодействие с мобильным клиентом осуществляется через 3 метода веб-сервиса:</p>
+<p><strong>get_conf</strong> : GET запрос который запускается клиентом при каждом входе в приложение. Ответом от учетной системы приходит XML с его конфигурацией</p>
+<p>Параметры:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>code- код мобильного клиента (в данном модуле код справочника «scМобильныеКлиенты»). Этот код нужно установить в настройках приложения.</p></li>
+<li><p>ClientURL   IP адрес собственного веб-сервиса, запущенного на клиенте. Он запоминается в системе чтобы при необходимости система могла отправить распоряжение по этому адресу</p></li>
+</ul>
+</div></blockquote>
+<p><strong>set_input</strong>: POST запрос, который вызывается клиентом каждый раз при смене экрана (т.е. при нажатии кнопки Далее, или автоматическом переходе.</p>
+<p>Параметры: обязательный параметр /set_input/{ИмяМетода} OperationData. В запросе от клиента передается JSON со значениями переменных (массив hashmap) и данными о клиенте, процессе и операции (поля client, process и operation) а также вид события и обработчик (подробнее в разделе ообработка событий)</p>
+<p>В ответе отправляется JSON с переменными, дополненными в 1С (массив hashmap) при необходимости массивом rows (описано ниже) и полями stop (true/false) и ErrorMessage с помощью которых можно остановить процесс на клиенте и показать ошибку. Это может быть ошибка в обработчике, или какая то иная ошибка. Например это может выглядеть так:</p>
+<p><strong>set_status</strong>: GET запрос для передачи данных о начале процесса и окончании процесса. Он отправляется 2 раза – первый раз когда процесс стартует (открывается окно процесса) и 2й раз когда он завершается (закрывается окно процесса). Эта информация как правило требуется для биллинга, для отчетов KPI по работе склада и т.д.</p>
+<dl class="simple">
+<dt>Параметры:</dt><dd><ul class="simple">
+<li><p>client – код клиента,</p></li>
+<li><p>operation – наименование операции</p></li>
+<li><p>process – наименование процесса</p></li>
+<li><p>command – команда либо start либо stop</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">SimpleUI</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+<p class="caption"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">О платформе</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_it_works.html">Как это работает?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Установка, ресурсы, начало работы</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Если нужно только разработка самостоятельного приложения (без он-лайн режима с 1С)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Если нужна работа в режиме он-лайн через веб-сервис 1С (тонкий клиент)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pro_version.html">Pro-версия</a></li>
+<li class="toctree-l1"><a class="reference internal" href="screens.html">Экраны, переменные и события</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_functions.html">Общие функции платформы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline.html">Самостоятельный режим</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="how_it_works.html" title="предыдущая глава">Как это работает?</a></li>
+      <li>Next: <a href="pro_version.html" title="следующая глава">Pro-версия</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Dmitry Vorontsov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
